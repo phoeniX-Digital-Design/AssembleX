@@ -96,7 +96,36 @@ def assemble_i_type(instruction, rd, rs1, imm):
     imm_bin = format(imm, '012b')
     return f"{imm_bin}{rs1}{funct3}{rd}{opcode}"
 
-def assemble_s_type(instruction, rs1, rs2,):
+def assemble_s_type(instruction, rs1, rs2, imm):
     opcode = INSTRUCTIONS[instruction]["opcode"]
     funct3 = INSTRUCTIONS[instruction]["funct3"]
-    funct7 = INSTRUCTIONS[instruction]["funct7"]
+    imm_bin = format(imm, '012b')
+    imm_low = imm_bin[0:7]
+    imm_high = imm_bin[7:12]
+    return f"{imm_high}{rs2}{rs1}{funct3}{imm_low}{opcode}"
+
+def assemble_b_type(instruction, rs1, rs2, imm):
+    opcode = INSTRUCTIONS[instruction]["opcode"]
+    funct3 = INSTRUCTIONS[instruction]["funct3"]
+    imm_bin = format(imm, '013b')
+    imm_low = imm_bin[0]
+    imm_mid = imm_bin[1:7]
+    imm_high = imm_bin[7:12]
+    imm_sign = imm_bin[12]
+    return f"{imm_high}{rs2}{rs1}{funct3}{imm_mid}{imm_sign}{imm_low}{opcode}"
+
+def assemble_u_type(instruction, rd, imm):
+    opcode = INSTRUCTIONS[instruction]["opcode"]
+    imm_bin = format(imm, '020b')
+    imm_high = imm_bin[0:12]
+    imm_low = imm_bin[12:20]
+    return f"{imm_low}{rd}{opcode}{imm_high}"
+
+def assemble_j_type(instruction, rd, imm):
+    opcode = INSTRUCTIONS[instruction]["opcode"]
+    imm_bin = format(imm, '021b')
+    imm_low = imm_bin[0]
+    imm_mid = imm_bin[1:11]
+    imm_high = imm_bin[11:20]
+    imm_sign = imm_bin[20]
+    return f"{imm_high}{rd}{imm_mid}{imm_sign}{imm_low}{opcode}"

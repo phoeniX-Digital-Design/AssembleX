@@ -1,3 +1,8 @@
+# AssembleX project : Original assembler script
+# Arvin Delavari - Fall 2023
+# Iran University of Science and Technology
+# ---------------------------------------------
+
 INSTRUCTIONS = {
     # R-Type Instructions
     "add": {"opcode": "0110011", "funct3": "000", "funct7": "0000000"},

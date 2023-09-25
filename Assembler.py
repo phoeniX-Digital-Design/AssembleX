@@ -1,13 +1,12 @@
-# AssembleX project : original assembler
-# Arvin Delavari - Fall 2023
-# Iran University of Science and Technology
-# -----------------------------------------
-import os
-import glob
 import re
 
+
+# ******************************************
+# ***** REMEMBER TO ADD EBREAK SUPPORT *****
+# ******************************************
+
 # Input '.s' or '.asm' RISC-V assembly code name
-input_file  = list(glob.iglob(os.path.join("AssembleX", '*' + ".s")))[0]
+input_file  = input("Assembly code file name: ")
 
 # Instruction encoding dictionary
 RTYPE_encoding = {

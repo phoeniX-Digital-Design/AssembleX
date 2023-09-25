@@ -48,7 +48,7 @@ def assemble(assembly_code):
         line = line.strip()
 
         # Ignore empty lines and comments
-        if not line or line.startswith("#"):
+        if not line or line.startswith("#") or line.startswith("."):
             continue
 
         # Split the line into tokens
@@ -65,7 +65,7 @@ def assemble(assembly_code):
             format_type = I_FORMAT
         elif instruction in ["beq", "bne", "blt", "bge", "bltu", "bgeu"]:
             format_type = B_FORMAT
-        elif instruction in ["lb", "lh", "lw", "lbu", "lhu", "sb", "sh", "sw"]:
+        elif instruction in ["lb", "lh", "lw", "lbu", "lhu", "sb", "sh", "sw","addi"]:
             format_type = I_FORMAT
         else:
             format_type = R_FORMAT
@@ -79,18 +79,21 @@ def assemble(assembly_code):
             rs1 = REGISTERS[args[1]]
             rs2 = REGISTERS[args[2]]
             machine_code.append((funct7 << 25) | (rs2 << 20) | (rs1 << 15) | (funct3 << 12) | (rd << 7) | opcode)
+
         elif format_type == I_FORMAT:
             opcode = OPCODES[instruction]
             rd = REGISTERS[args[0]]
             rs1 = REGISTERS[args[1]]
             imm = int(args[2])
             machine_code.append((imm << 20) | (rs1 << 15) | (funct3 << 12) | (rd << 7) | opcode)
+
         elif format_type == S_FORMAT:
             opcode = OPCODES[instruction]
             imm = int(args[1])
             rs1 = REGISTERS[args[2]]
             rs2 = REGISTERS[args[0][args[0].index("(") + 1:-1]]
             machine_code.append((imm << 25) | (rs2 << 20) | (rs1 << 15) | (funct3 << 12) | opcode)
+
         elif format_type == B_FORMAT:
             opcode = OPCODES[instruction]
             funct3 = OPCODES[instruction]
@@ -99,11 +102,13 @@ def assemble(assembly_code):
             imm = int(args[2])
             offset = ((imm >> 11) & 1) << 12 | ((imm >> 1) & 0b11111110) << 5 | ((imm >> 5) & 0b1) << 11 | ((imm >> 12) & 0b1111) << 1
             machine_code.append((offset << 19) | (rs2 << 24) | (rs1 << 15) | (funct3 << 12) | opcode)
+
         elif format_type == U_FORMAT:
             opcode = OPCODES[instruction]
             rd = REGISTERS[args[0]]
             imm = int(args[1])
             machine_code.append((imm << 12) | (rd << 7) | opcode)
+
         elif format_type == J_FORMAT:
             opcode = OPCODES[instruction]
             rd = REGISTERS[args[0]]
@@ -114,26 +119,17 @@ def assemble(assembly_code):
     return machine_code
 
 
-def encode_r_format(opcode, rd, funct3, rs1, rs2, funct7):
-    machine_code = (funct7 << 25) | (rs2 << 20) | (rs1 << 15) | (funct3 << 12) | (rd << 7) | opcode
-    return machine_code
+# Example assembly code
+assembly_code = """
+    # Calculate the sum of two numbers
+    addi t0, zero, 5
+    addi t1, zero, 10
+    add t2, t0, t1
+    """
 
+# Assemble the code
+machine_code = assemble(assembly_code)
 
-def encode_i_format(opcode, rd, funct3, rs1, imm):
-    machine_code = (imm << 20) | (rs1 << 15) | (funct3 << 12) | (rd << 7) | opcode
-    return machine_code
-
-
-def encode_s_format(opcode, offset, funct3, rs1, rs2):
-    machine_code = (offset << 25) | (rs2 << 20) | (rs1 << 15) | (funct3 << 12) | opcode
-    return machine_code
-
-
-def encode_b_format(opcode, offset, funct3, rs1, rs2):
-    machine_code = (offset << 31) | (rs2 << 25) | (rs1 << 20) | (funct3 << 12) | opcode
-    return machine_code
-
-
-def encode_u_format(opcode, rd, imm):
-    machine_code = (imm << 12) | (rd << 7) | opcode
-    return machine_code
+# Print the machine code
+for instruction in machine_code:
+    print(bin(instruction)[2:].zfill(32))

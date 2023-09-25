@@ -5,8 +5,45 @@ import re
 # ***** REMEMBER TO ADD EBREAK SUPPORT *****
 # ******************************************
 
-# Input '.s' or '.asm' RISC-V assembly code name
 input_file  = input("Assembly code file name: ")
+
+def get_instruction_type(instruction):
+    opcode = instruction & 0x7F
+
+    if opcode == 0x37 or opcode == 0x17:
+        return "U-Type"
+    elif opcode == 0x6F or opcode == 0x67 or opcode == 0x63:
+        return "J-Type"
+    elif opcode == 0x23 or opcode == 0x03:
+        return "I-Type"
+    elif opcode == 0x63:
+        return "B-Type"
+    elif opcode == 0x33 or opcode == 0x3B:
+        return "R-Type"
+    elif opcode == 0x0F:
+        return "AUIPC-Type"
+    elif opcode == 0x13:
+        funct3 = (instruction >> 12) & 0x7
+
+    if funct3 == 0x0 or funct3 == 0x4 or funct3 == 0x6 or funct3 == 0x7:
+        return "I-Type"
+    elif funct3 == 0x1 or funct3 == 0x5:
+        return "S-Type"
+    elif funct3 == 0x2 or funct3 == 0x3:
+        return "B-Type"
+    elif funct3 == 0x3 or funct3 == 0x7:
+        return "I-Type"
+    elif funct3 == 0x4 or funct3 == 0x6:
+        return "U-Type"
+    elif funct3 == 0x0 or funct3 == 0x1 or funct3 == 0x2 or funct3 == 0x3 or funct3 == 0x4 or funct3 == 0x5 or funct3 == 0x6 or funct3 == 0x7:
+        return "R-Type"
+    
+    return "Unknown"
+
+# Example
+instruction = 0x00200093
+instruction_type = get_instruction_type(instruction)
+print(f"Instruction Type: {instruction_type}")
 
 # Instruction encoding dictionary
 RTYPE_encoding = {

@@ -1,12 +1,12 @@
 import re
 
-
 # ******************************************
 # ***** REMEMBER TO ADD EBREAK SUPPORT *****
 # ******************************************
 
 input_file  = input("Assembly code file name: ")
 
+# Defining Instruction Type Function --------------------------------------------------------------------------------
 def get_instruction_type(instruction):
     opcode = instruction & 0x7F
 
@@ -45,7 +45,7 @@ instruction = 0x00200093
 instruction_type = get_instruction_type(instruction)
 print(f"Instruction Type: {instruction_type}")
 
-# Instruction encoding dictionary
+# Instruction encoding dictionary -----------------------------------------------------------------------------
 RTYPE_encoding = {
     # R-type instructions
     "add":  {"opcode": "0110011", "funct3": "000", "funct7": "0000000"},
@@ -83,7 +83,7 @@ JTYPE_encoding = {
     "jal": {"opcode": "1101111"},
     }
 
-# Register encoding dictionary
+# Register encoding dictionary ---------------------------------------------------------------------------------
 register_encoding = {
     "zero":"00000",
     "ra":  "00001",
@@ -119,6 +119,7 @@ register_encoding = {
     "t6":  "11111",
 }
 
+# Assembler Function --------------------------------------------------------------------------------------------
 def assembler(input_file):
     hex_instructions = []
 
@@ -148,6 +149,7 @@ def assembler(input_file):
 
     return hex_instructions
 
+# Immediate Encoding Function ------------------------------------------------------------------------------------
 def encode_immediate(imm, inst_type):
     if inst_type == 'I':
         # I-type: imm[11:0]
@@ -175,6 +177,11 @@ print(f"Encoding for S-type instruction: {encode_immediate(12, 'S')}")
 print(f"Encoding for B-type instruction: {encode_immediate(12, 'B')}")
 print(f"Encoding for U-type instruction: {encode_immediate(12, 'U')}")
 print(f"Encoding for J-type instruction: {encode_immediate(12, 'J')}")
+
+
+
+
+
 
 # Usage example
 hex_instructions = assembler(input_file)

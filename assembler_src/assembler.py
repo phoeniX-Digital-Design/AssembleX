@@ -1,7 +1,7 @@
 from convert import AssemblyConverter as AC
 import os
 
-file_path = "New_AssembleX/result.txt"
+file_path = "assembler_src/result.txt"
 # instantiate object, by default outputs to a file in nibbles, not in hexademicals
 convert = AC(output_mode = 'f', nibble_mode = True, hex_mode = False)
 

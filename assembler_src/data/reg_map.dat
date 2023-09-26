@@ -30,6 +30,7 @@ x28 x28
 x29 x29
 x30 x30
 x31 x31
+zero x0
 ra x1
 sp x2
 gp x3

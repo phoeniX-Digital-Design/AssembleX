@@ -397,3 +397,8 @@ pseudo_instr = [
 	"not", "ret", "seqz", 
 	"snez", "bgt", "ble"
 ]
+
+'''get_intr_set_map = {}
+for instr_set in [R_instr, I_instr, S_instr, SB_instr, U_instr, UJ_instr, pseudo_instr]:
+	for instr in instr_set:
+		get_instr_set_map[instr] = '''

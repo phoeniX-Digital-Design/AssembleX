@@ -1,3 +1,17 @@
+'''
+	Current Functionality:
+		- Read given file
+		- Tokenize that file, split up variables on each line
+			- Identify function, registers, variables
+		- Convert tokens of that line to machine code
+		- Output to text, bin, or console
+
+	Immediate ToDos:
+		- Implement hexmode
+		- Go through and fix the instruction conversions themselves
+		- Update tests
+'''
+
 from assembler_src.instr_arr import *
 from assembler_src.parse import *
 from os.path import exists
@@ -48,6 +62,10 @@ class AssemblyConverter:
 		assert type(x) == bool, "Hex mode needs to be a boolean."
 		return x
 
+	'''
+		Property: the way to output machine code
+			Options: 'a', 'f', 'p'
+	'''
 	@property
 	def output_mode(self) -> str:
 		return self.__output_mode
@@ -56,6 +74,11 @@ class AssemblyConverter:
 	def output_mode(self, x : str) -> None:
 		self.__output_mode = x
 
+	'''
+		Property: whether to print in nibbles (only applicable for text or print)
+			True = nibble
+			False = full number
+	'''
 	@property
 	def nibble_mode(self) -> str:
 		return self.__nibble_mode
@@ -64,6 +87,11 @@ class AssemblyConverter:
 	def nibble_mode(self, x : str) -> None:
 		self.__nibble_mode = x
 
+	'''
+	Property: whether to return as hex or not
+		True = hex
+		False = binary
+	'''
 	@property
 	def hex_mode(self) -> str:
 		return self.__hex_mode
@@ -72,6 +100,11 @@ class AssemblyConverter:
 	def hex_mode(self, x : str) -> None:
 		self.__hex_mode = x
 
+	'''
+		Put it all together. Need to modify for output type.
+
+		Input is either a file name or string of assembly.
+	'''
 	def convert(self, input : str, file : str = None):
 		output = Parser(input)
 		assert len(output) > 0, "Provided input yielded nothing from parser. Check input."

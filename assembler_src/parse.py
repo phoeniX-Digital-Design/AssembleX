@@ -1,4 +1,4 @@
-from instr_arr import *
+from assembler_src.instr_arr import *
 from types import FunctionType as function
 from os.path import exists
 __all__ = ['Parser']

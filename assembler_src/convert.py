@@ -1,5 +1,5 @@
-from instr_arr import *
-from parse import *
+from assembler_src.instr_arr import *
+from assembler_src.parse import *
 from os.path import exists
 
 __all__ = ['AssemblyConverter']

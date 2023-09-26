@@ -1,13 +1,7 @@
-# ----------------------------------------------------------------
-# |                          AssembleX                           |
-# | ------------------------------------------------------------ |
-# | Custom-built RISC-V assembly code executant for phoeniX core |
-# |          By : Arvin Delavari - Faraz Ghoreishy               |
-# |   Iran University of Science and Technology - Summer 2023    |
-# ----------------------------------------------------------------
 import os
 import sys
 import glob
+from New_AssembleX import convert
 
 testbench_file = "phoeniX_Testbench.v"
 option = sys.argv[1]

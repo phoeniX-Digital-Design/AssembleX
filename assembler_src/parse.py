@@ -5,8 +5,6 @@ __all__ = ['Parser']
 
 class _Parser:
 
-	
-
 	def __call__(self, *args) -> list:
 		
 		if type(args[0]) == list:

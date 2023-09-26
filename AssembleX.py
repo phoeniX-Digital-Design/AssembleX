@@ -15,13 +15,13 @@ elif option == 'code':
 else:
     raise ValueError("Options are: sample, code")
 
-file_path = "assembler_src/" + output_name + ".txt"
+file_path = directory + "/" + project_name + "/" + output_name + ".txt"
 print ("file path = " + file_path)
 
 # instantiate object, by default outputs to a file in nibbles, not in hexademicals
 convert = AC(output_mode = 'f', nibble_mode = True, hex_mode = False)
-input_file  = list(glob.iglob(os.path.join("Software", directory, project_name, '*' + ".s")))[0]
-output_file = os.path.join("Software", directory, project_name, output_name)
+input_file  = list(glob.iglob(os.path.join(directory, project_name, '*' + ".s")))[0]
+output_file = os.path.join(directory, project_name, output_name)
 
 # Convert a whole .s file to text file
 convert(input_file, file_path)

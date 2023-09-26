@@ -1,7 +1,13 @@
 import os
 import sys
 import glob
-from New_AssembleX import convert
+from assembler_src.convert import AssemblyConverter as AC
+
+file_path = "assembler_src/result.txt"
+# instantiate object, by default outputs to a file in nibbles, not in hexademicals
+convert = AC(output_mode = 'f', nibble_mode = True, hex_mode = False)
+# Convert a whole .s file to text file
+convert("test.s", file_path)
 
 testbench_file = "phoeniX_Testbench.v"
 option = sys.argv[1]
@@ -18,23 +24,46 @@ else:
 input_file  = list(glob.iglob(os.path.join("Software", directory, project_name, '*' + ".txt")))[0]
 output_file = os.path.join("Software", directory, project_name, output_name)
 
-# Read the contents of the input file (assembly text file)
-with open(input_file, "r") as file:
-    lines = file.readlines()
+def remove_spaces_in_lines(file_path):
+    # Read the contents of the file
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+    # Remove spaces in each line
+    lines = [line.replace('\t', '') for line in lines]
+    # Write the modified lines back to the file
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
+remove_spaces_in_lines(file_path)
 
-# Remove the first and third columns from each line (PC and Code)
-modified_lines = [line.split()[1] +'\n' for line in lines]
+def binary_to_hex(binary_string):
+    decimal_value = int(binary_string, 2)
+    hex_string = hex(decimal_value)[2:].zfill(8)
+    return hex_string
 
-# Remove the "0x" prefix from each line
-modified_lines = [line[2:] for line in modified_lines]
+def convert_lines_to_hex(file_path):
+    # Read the contents of the file
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+    # Convert each line to hex format
+    hex_lines = [binary_to_hex(line.strip()) for line in lines]
+    # Write the hex lines to a new file
+    with open(file_path, 'w') as file:
+        file.write('\n'.join(hex_lines))
+convert_lines_to_hex(file_path)
 
-# Remove '\n\n' elements from the array
-final_hex_code = [elem for elem in modified_lines if elem != '\n\n']
-# print(final_hex_code)
+def change_file_format(file_path, new_format):
+    # Split the file path into directory and base name
+    directory, base_name = os.path.split(file_path)
+    # Split the base name into name and old format
+    name, old_format = os.path.splitext(base_name)
+    # Generate the new file path with the new format
+    new_file_path = os.path.join(directory, name + new_format)
+    # Rename the file
+    os.rename(file_path, new_file_path)
+    print(f"File renamed: {new_file_path}")
 
-# Write the modified contents to the output file
-with open(output_file, "w") as file:
-    file.writelines(final_hex_code)
+new_format = '.hex'
+change_file_format(file_path, new_format)
 
 # Change firmware in the testbench file
 with open(testbench_file, 'r') as file:

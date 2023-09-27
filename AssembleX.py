@@ -23,6 +23,15 @@ convert = AC(output_mode = 'f', nibble_mode = True, hex_mode = False)
 input_file  = list(glob.iglob(os.path.join(directory, project_name, '*' + ".s")))[0]
 output_file = os.path.join(directory, project_name, output_name)
 
+def comment_ebreak(input_file):
+    with open(input_file, 'r') as file:
+        lines = file.readlines()
+    modified_lines = [line.replace('ebreak', '#ebreak') if 'ebreak' in line else line for line in lines]
+    with open(input_file, 'w') as file:
+        file.writelines(modified_lines)
+    print("File modified successfully.")
+comment_ebreak(input_file)
+
 # Convert a whole .s file to text file
 convert(input_file, file_path)
 def remove_spaces_in_lines(file_path):
@@ -59,6 +68,15 @@ def change_file_format(file_path, new_format):
 
 new_format = '.hex'
 change_file_format(file_path, new_format)
+
+def uncomment_ebreak(input_file):
+    with open(input_file, 'r') as file:
+        lines = file.readlines()
+    modified_lines = [line.replace('#ebreak', 'ebreak') if '#ebreak' in line else line for line in lines]
+    with open(input_file, 'w') as file:
+        file.writelines(modified_lines)
+    print("File modified successfully.")
+uncomment_ebreak(input_file)
 
 # Change firmware in the testbench file
 with open(testbench_file, 'r') as file:

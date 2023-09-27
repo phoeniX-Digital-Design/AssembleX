@@ -46,6 +46,10 @@ def convert_lines_to_hex(file_path):
         file.write('\n'.join(hex_lines))
 convert_lines_to_hex(file_path)
 
+ebreak = '00100073'
+with open(file_path, 'a') as file:
+    file.write('\n' + ebreak)
+
 def change_file_format(file_path, new_format):
     directory, base_name = os.path.split(file_path)
     name, old_format = os.path.splitext(base_name)

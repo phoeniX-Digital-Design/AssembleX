@@ -32,7 +32,16 @@ else:
     raise ValueError("Options are: sample, code")
 
 file_path = directory + "/" + project_name + "/" + output_name + ".txt"
+hex_file_path = directory + "/" + project_name + "/" + output_name + ".hex"
 print ("file path = " + file_path)
+
+def delete_file(hex_file_path):
+    if os.path.exists(hex_file_path):
+        os.remove(hex_file_path)
+        print(f">> File deleted: {hex_file_path}")
+    else:
+        print(f">> File not found: {hex_file_path}")
+delete_file(hex_file_path)
 
 # instantiate object, by default outputs to a file in nibbles, not in hexademicals
 convert = assembly_converter(output_mode = 'f', nibble_mode = True, hex_mode = False)
@@ -45,7 +54,7 @@ def comment_ebreak(input_file):
     modified_lines = [line.replace('ebreak', '#ebreak') if 'ebreak' in line else line for line in lines]
     with open(input_file, 'w') as file:
         file.writelines(modified_lines)
-    print("File modified successfully.")
+    print(">> ebreak commented")
 comment_ebreak(input_file)
 
 # Convert a whole .s file to text file
@@ -74,6 +83,7 @@ convert_lines_to_hex(file_path)
 ebreak = '00100073'
 with open(file_path, 'a') as file:
     file.write('\n' + ebreak)
+    print(">> ebreak 00100073 added to hex file")
 
 def change_file_format(file_path, new_format):
     directory, base_name = os.path.split(file_path)
@@ -91,8 +101,9 @@ def uncomment_ebreak(input_file):
     modified_lines = [line.replace('#ebreak', 'ebreak') if '#ebreak' in line else line for line in lines]
     with open(input_file, 'w') as file:
         file.writelines(modified_lines)
-    print("File modified successfully.")
+    print(">> ebreak uncommented")
 uncomment_ebreak(input_file)
+print(">> HEX firmware generated successfully")
 
 # Change firmware in the testbench file
 with open(testbench_file, 'r') as file:

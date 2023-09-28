@@ -1,3 +1,6 @@
+![License](https://img.shields.io/github/license/phoeniX-Digital-Design/AssembleX?color=green)
+![Test](https://img.shields.io/badge/tests-passed-green)
+
 AssembleX V2.0
 ===============
 
@@ -37,4 +40,11 @@ In order to run your own code on phoeniX, create a directory named to your proje
 python AssembleX.py code my_project
 ```
 Provided that you name your project sub-directory correctly the AssembleX software will create `my_project_firmware.hex` and fed it directly to the testbench of phoeniX processor. After that, iverilog and GTKWave are used to compile the design and view the selected waveforms.
+</div>
+
+<div align="justify">
+
+> [!NOTE]\
+> AssembleX V2.0 is not integrated within the [phoeniX](https://github.com/phoeniX-Digital-Design/phoeniX) project repository yet. Currently phoeniX core is working with AssembleX V1.0 which is using the assistance of Venus Simulator VS code extension. **phoeniX** RISC-V processor will be empowered by **AssembleX V2.0** in the upcoming updates very soon!
+
 </div>

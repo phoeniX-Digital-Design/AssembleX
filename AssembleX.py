@@ -1,12 +1,12 @@
 '''
 AssembleX V2.0
 
-AssembleX a free open-source software helping the simulation and execution process of an assembly code on
+AssembleX a free open-source software designed to automate the execution process of an assembly code on
 a RISC-V processor. Fisrt Version used to work the help of Venus simulator which was a VS code extension.
 AssembleX Version 2.0 has an integrated assembler inside which eliminates the interference of Venus Simulator.
-User manual is included in the README.md included in the repository. AssembleX is design in order to run and
-execute assembly codes on phoeniX RISC-V process of IUST-ERC; but can also be used on other projects as an
-instruction memory generator.
+User manual is included in the README.md inside AssembleX repository. AssembleX is designed in order to run and
+execute assembly codes on phoeniX RISC-V processor of IUST-ERC; but can also be used on other projects as an
+instruction memory generator (for Verilog ans SystemVerilog CPU targets).
 phoeniX project : https://github.com/phoeniX-Digital-Design/phoeniX
 Assembler source : https://github.com/celebi-pkg/riscv-assembler
 

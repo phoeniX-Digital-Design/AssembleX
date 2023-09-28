@@ -10,8 +10,8 @@ instruction memory generator (for Verilog ans SystemVerilog CPU targets).
 phoeniX project : https://github.com/phoeniX-Digital-Design/phoeniX
 Assembler source : https://github.com/celebi-pkg/riscv-assembler
 
-Arvin Delavari - Iran Universisty of Science and Technology, Fall 2023
-Digital Design Research Lab, SCaN (SuperComputing and Networking) Research lab of Electronics Research Center
+Arvin Delavari - Iran Universisty of Science and Technology, Electronics Research Center
+Digital Design Research Lab, SCaN (SuperComputing and Networking) Research Lab - Fall 2023
 ''' 
 
 from assembler_src.convert import converter as assembly_converter

@@ -1,5 +1,6 @@
 ![License](https://img.shields.io/github/license/phoeniX-Digital-Design/AssembleX?color=green)
 ![Test](https://img.shields.io/badge/tests-passed-green)
+![Integration with phoeniX project](https://img.shields.io/badge/integration_with_phoeniX-in_progress-blue)
 
 AssembleX V2.0
 ===============

@@ -5,19 +5,6 @@ __all__ = ['Parser']
 
 class _Parser:
 
-	'''
-		Procedure:
-			- Call read_file()
-				- Strip the line and check valid_line()
-				- interpret() the line
-					- handle_inline_comments()
-					- determine_type() of instruction
-						- returns appropriate function
-					- return parsed version of line
-				- combine the interpreted lines together
-				- Return
-	'''
-
 	def __call__(self, *args) -> list:
 		
 		if type(args[0]) == list:
@@ -72,15 +59,6 @@ class _Parser:
 	'''
 	@staticmethod
 	def read_file(file : str) -> list:
-		'''code = []
-								file = open(file, "r")
-								line = file.readline()
-								while line != "":
-									tokens = _Parser.tokenize(line)
-									code += [_Parser.interpret(tokens) for _ in range(1) if len(tokens) != 0]
-									line = file.readline()
-								file.close()
-								return code'''
 		with open(file) as f:
 			return [x.strip() for x in f.readlines() if x != '\n']
 

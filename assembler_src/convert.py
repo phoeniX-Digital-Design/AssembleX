@@ -1,17 +1,3 @@
-'''
-	Current Functionality:
-		- Read given file
-		- Tokenize that file, split up variables on each line
-			- Identify function, registers, variables
-		- Convert tokens of that line to machine code
-		- Output to text, bin, or console
-
-	Immediate ToDos:
-		- Implement hexmode
-		- Go through and fix the instruction conversions themselves
-		- Update tests
-'''
-
 from assembler_src.instr_arr import *
 from assembler_src.parse import *
 from os.path import exists

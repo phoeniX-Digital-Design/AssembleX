@@ -1,4 +1,20 @@
-from assembler_src.convert import AssemblyConverter as AC
+'''
+AssembleX V2.0
+
+AssembleX a free open-source software helping the simulation and execution process of an assembly code on
+a RISC-V processor. Fisrt Version used to work the help of Venus simulator which was a VS code extension.
+AssembleX Version 2.0 has an integrated assembler inside which eliminates the interference of Venus Simulator.
+User manual is included in the README.md included in the repository. AssembleX is design in order to run and
+execute assembly codes on phoeniX RISC-V process of IUST-ERC; but can also be used on other projects as an
+instruction memory generator.
+phoeniX project : https://github.com/phoeniX-Digital-Design/phoeniX
+Assembler source : https://github.com/celebi-pkg/riscv-assembler
+
+Arvin Delavari - Iran Universisty of Science and Technology, Fall 2023
+Digital Design Research Lab, SCaN (SuperComputing and Networking) Research lab of Electronics Research Center
+''' 
+
+from assembler_src.convert import converter as assembly_converter
 import os
 import sys
 import glob
@@ -19,7 +35,7 @@ file_path = directory + "/" + project_name + "/" + output_name + ".txt"
 print ("file path = " + file_path)
 
 # instantiate object, by default outputs to a file in nibbles, not in hexademicals
-convert = AC(output_mode = 'f', nibble_mode = True, hex_mode = False)
+convert = assembly_converter(output_mode = 'f', nibble_mode = True, hex_mode = False)
 input_file  = list(glob.iglob(os.path.join(directory, project_name, '*' + ".s")))[0]
 output_file = os.path.join(directory, project_name, output_name)
 

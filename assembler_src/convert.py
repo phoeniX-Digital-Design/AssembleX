@@ -2,9 +2,9 @@ from assembler_src.instr_arr import *
 from assembler_src.parse import *
 from os.path import exists
 
-__all__ = ['AssemblyConverter']
+__all__ = ['converter']
 
-class AssemblyConverter:
+class converter:
 
 	def __init__(self, output_mode : str = 'a', nibble_mode : bool = False, hex_mode : bool = False) -> None:
 		self.__output_mode = self.__check_output_mode(output_mode)
@@ -26,7 +26,7 @@ class AssemblyConverter:
 		)
 
 	def clone(self):
-		return AssemblyConverter(
+		return converter(
 			output_mode = self.__output_mode,
 			nibble_mode = self.__nibble_mode,
 			hex_mode = self.__hex_mode
@@ -107,7 +107,7 @@ class AssemblyConverter:
 				# change back to binary
 				print('Warning: hex mode overrided in over to output to binary file.')
 				output = [format(int(elem, 16), '032b') for elem in output]
-			AssemblyConverter.write_to_file(output, file)
+			converter.write_to_file(output, file)
 			return
 		elif self.__output_mode == 'p':
 			print('\n'.join(output))
@@ -144,9 +144,9 @@ class AssemblyConverter:
 
 	def mod(self, output : list) -> list:
 		if self.__nibble_mode:
-			output = AssemblyConverter.apply_nibble(output)
+			output = converter.apply_nibble(output)
 		elif self.__hex_mode:
-			output = AssemblyConverter.apply_hex(output)
+			output = converter.apply_hex(output)
 		return output
 
 	@staticmethod

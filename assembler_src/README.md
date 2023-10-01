@@ -9,5 +9,5 @@ The original package contains tools and functions that can convert RISC-V Assemb
 
 </div>
 
-- RISC-V Assembly code assembler package : https://www.riscvassembler.org/
-- RISC-V Assembler original script : https://github.com/celebi-pkg/riscv-assembler
+- RISC-V Assembly code assembler package: https://www.riscvassembler.org/
+- RISC-V Assembler original script: https://github.com/celebi-pkg/riscv-assembler

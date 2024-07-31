@@ -1,3 +1,13 @@
+#  AssembleX V3.0
+#  RISC-V Assembly Software Assistant for the phoeniX project (https://github.com/phoeniX-Digital-Design/phoeniX)
+
+#  Description: Registers + Index mapping
+#  Copyright 2024 Iran University of Science and Technology. <phoenix.digital.electronics@gmail.com>
+
+#  Permission to use, copy, modify, and/or distribute this software for any
+#  purpose with or without fee is hereby granted, provided that the above
+#  copyright notice and this permission notice appear in all copies.
+
 registers_rv32i = [ 'x0',   'x1',   'x2',   'x3',   'x4',   'x5',   'x6',   'x7',   
                     'x8',   'x9',   'x10',  'x11',  'x12',  'x13',  'x14',  'x15',  
                     'x16',  'x17',  'x18',  'x19',  'x20',  'x21',  'x22',  'x23',  

@@ -121,7 +121,6 @@ if error_flag[0] == 0:
         file = open(firmware_hex_path, "w")
         for line in hex_instruction:
             file.write(line + '\n')
-        file.write('00100073') # Mannualy adding ebreak
         print('\DONE: Successfully created FIRMWARE file')
         file.close()
     except:

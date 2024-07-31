@@ -169,6 +169,8 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
             opcode == 'OR'      or opcode == 'or'       or opcode == 'AND'   or opcode == 'and':
         r_type_flag = 1
         opcode_bin = '0110011'
+    elif    opcode == 'EBREAK'  or opcode == 'ebreak'   or opcode == 'ECALL' or opcode == 'ecall':
+        opcode_bin = '1110011'  # EBRAK
 
     # Pseudo instructions decoding    
     elif opcode == 'MV' or opcode == 'mv':
@@ -552,7 +554,15 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
         error_flag[0] = 1
 
     # Decoding 'funct3' and 'funct7' fields of instruction
-    if instruction_error_flag == 0 and (opcode == 'ADD' or opcode == 'add'):
+    if instruction_error_flag == 0 and (opcode == 'EBREAK' or opcode == 'ebreak'):
+        funct3 = '000'
+        funct7 = '0000000'
+        bin_instruction.append('00000000000100000000000001110011')
+    elif instruction_error_flag == 0 and (opcode == 'ECALL' or opcode == 'ecall'):
+        funct3 = '000'
+        funct7 = '0000000'
+        bin_instruction.append('00000000000000000000000001110011')
+    elif instruction_error_flag == 0 and (opcode == 'ADD' or opcode == 'add'):
         funct3 = '000'
         funct7 = '0000000'
         bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)

@@ -124,44 +124,49 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
         return 2
 
     # opcode decoding
-    if opcode == 'LUI' or opcode == 'lui':
+    if      opcode == 'LUI'     or opcode == 'lui':
         u_type_flag = 1
         opcode_bin = '0110111'
-    elif opcode == 'AUIPC' or opcode == 'auipc':
+    elif    opcode == 'AUIPC'   or opcode == 'auipc':
         u_type_flag = 1
         opcode_bin = '0010111'
-    elif opcode == 'JAL' or opcode == 'jal':
+    elif    opcode == 'JAL'     or opcode == 'jal':
         j_type_flag = 1
         opcode_bin = '1101111'
-    elif opcode == 'JALR' or opcode == 'jalr':
+    elif    opcode == 'JALR'    or opcode == 'jalr':
         i_type_flag = 1
         opcode_bin = '1100111'
-    elif opcode == 'BEQ' or opcode == 'beq' or opcode == 'BNE' or opcode == 'bne' or \
-            opcode == 'BLT' or opcode == 'blt' or opcode == 'BGE' or opcode == 'bge' or \
-            opcode == 'BLTU' or opcode == 'bltu' or opcode == 'BGEU' or opcode == 'bgeu':
+    elif    opcode == 'BEQ'     or opcode == 'beq'      or opcode == 'BNE'   or opcode == 'bne'     or \
+            opcode == 'BLT'     or opcode == 'blt'      or opcode == 'BGE'   or opcode == 'bge'     or \
+            opcode == 'BLTU'    or opcode == 'bltu'     or opcode == 'BGEU'  or opcode == 'bgeu':
         b_type_flag = 1
         opcode_bin = '1100011'
-    elif opcode == 'LB' or opcode == 'lb' or opcode == 'LH' or opcode == 'lh' or \
-            opcode == 'LW' or opcode == 'lw' or opcode == 'LBU' or opcode == 'lbu' or \
-            opcode == 'LHU' or opcode == 'lhu':
+    elif    opcode == 'LB'      or opcode == 'lb'       or opcode == 'LH'    or opcode == 'lh'      or \
+            opcode == 'LW'      or opcode == 'lw'       or opcode == 'LBU'   or opcode == 'lbu'     or \
+            opcode == 'LHU'     or opcode == 'lhu':
         i_type_flag = 1
         opcode_bin = '0000011'
-    elif opcode == 'SB' or opcode == 'sb' or opcode == 'SH' or opcode == 'sh' or \
-            opcode == 'SW' or opcode == 'sw':
+    elif    opcode == 'SB'      or opcode == 'sb'       or opcode == 'SH'    or opcode == 'sh'      or \
+            opcode == 'SW'      or opcode == 'sw':
         s_type_flag = 1
         opcode_bin = '0100011'
-    elif opcode == 'ADDI' or opcode == 'addi' or opcode == 'SLTI' or opcode == 'slti' or \
-            opcode == 'SLTIU' or opcode == 'sltiu' or opcode == 'XORI' or opcode == 'xori' or \
-            opcode == 'ORI' or opcode == 'ori' or opcode == 'ANDI' or opcode == 'andi' or \
-            opcode == 'SLLI' or opcode == 'slli' or opcode == 'SRLI' or opcode == 'srli' or \
-            opcode == 'SRAI' or opcode == 'srai':
+    elif    opcode == 'ADDI'    or opcode == 'addi'     or opcode == 'SLTI'  or opcode == 'slti'    or \
+            opcode == 'SLTIU'   or opcode == 'sltiu'    or opcode == 'XORI'  or opcode == 'xori'    or \
+            opcode == 'ORI'     or opcode == 'ori'      or opcode == 'ANDI'  or opcode == 'andi'    or \
+            opcode == 'SLLI'    or opcode == 'slli'     or opcode == 'SRLI'  or opcode == 'srli'    or \
+            opcode == 'SRAI'    or opcode == 'srai':
         i_type_flag = 1
         opcode_bin = '0010011'
-    elif opcode == 'ADD' or opcode == 'add' or opcode == 'SUB' or opcode == 'sub' or \
-            opcode == 'SLL' or opcode == 'sll' or opcode == 'SLT' or opcode == 'slt' or \
-            opcode == 'SLTU' or opcode == 'sltu' or opcode == 'XOR' or opcode == 'xor' or \
-            opcode == 'SRL' or opcode == 'srl' or opcode == 'SRA' or opcode == 'sra' or \
-            opcode == 'OR' or opcode == 'or' or opcode == 'AND' or opcode == 'and':
+    elif    opcode == 'ADD'     or opcode == 'add'      or opcode == 'SUB'   or opcode == 'sub'     or \
+            opcode == 'SLL'     or opcode == 'sll'      or opcode == 'SLT'   or opcode == 'slt'     or \
+            opcode == 'SLTU'    or opcode == 'sltu'     or opcode == 'XOR'   or opcode == 'xor'     or \
+            opcode == 'SRL'     or opcode == 'srl'      or opcode == 'SRA'   or opcode == 'sra'     or \
+            opcode == 'MUL'     or opcode == 'mul'      or opcode == 'MULH'  or opcode == 'mulh'    or \
+            opcode == 'MULHSU'  or opcode == 'mulhsu'   or opcode == 'MULHU' or opcode == 'mulhu'   or \
+            opcode == 'DIV'     or opcode == 'div'      or opcode == 'DIVU'  or opcode == 'divu'    or \
+            opcode == 'REM'     or opcode == 'rem'      or opcode == 'REMU'  or opcode == 'remu'    or \
+            opcode == 'SRL'     or opcode == 'srl'      or opcode == 'SRA'   or opcode == 'sra'     or \
+            opcode == 'OR'      or opcode == 'or'       or opcode == 'AND'   or opcode == 'and':
         r_type_flag = 1
         opcode_bin = '0110011'
 
@@ -587,6 +592,38 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
         funct3 = '111'
         funct7 = '0000000'
         bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+    elif instruction_error_flag == 0 and (opcode == 'MUL' or opcode == 'mul'):
+        funct3 = '000'
+        funct7 = '0000001'
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+    elif instruction_error_flag == 0 and (opcode == 'MULH' or opcode == 'mulh'):
+        funct3 = '001'
+        funct7 = '0000001'
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+    elif instruction_error_flag == 0 and (opcode == 'MULHSU' or opcode == 'mulhsu'):
+        funct3 = '010'
+        funct7 = '0000001'
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+    elif instruction_error_flag == 0 and (opcode == 'MULHU' or opcode == 'mulhu'):
+        funct3 = '011'
+        funct7 = '0000001'
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+    elif instruction_error_flag == 0 and (opcode == 'DIV' or opcode == 'div'):
+        funct3 = '100'
+        funct7 = '0000001'
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+    elif instruction_error_flag == 0 and (opcode == 'DIVU' or opcode == 'divu'):
+        funct3 = '101'
+        funct7 = '0000001'
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+    elif instruction_error_flag == 0 and (opcode == 'REM' or opcode == 'rem'):
+        funct3 = '110'
+        funct7 = '0000001'
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+    elif instruction_error_flag == 0 and (opcode == 'REMU' or opcode == 'remu'):
+        funct3 = '111'
+        funct7 = '0000001'
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'JALR' or opcode == 'jalr'):
         immediate_bin_11_0 = immediate_bin[20:32]  # immediate[11:0]
         funct3 = '000'
@@ -750,11 +787,11 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
         funct3 = '000'
         bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rdt_bin + opcode_bin)
     else:
-        funct3 = 'XXX'  # Do nothing
+        funct3 = 'XXX'
 
     # Update pc
     if pseudo_instruction_li_type_flag or pseudo_instruction_la_type_flag:
-        pc[0] = pc[0] + 8  # Instruction "LI" expands to two instructions
+        pc[0] = pc[0] + 8  # LI expands to two instructions
     else:
         pc[0] = pc[0] + 4
 

@@ -807,9 +807,9 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
 
     # Check for any errors logged in the instruction
     if instruction_error_flag == 0:
-        print("INFO: Line no.", line_number, "- PASSED: NO ERROR")
+        print("INFO: Processing line", line_number, "- PASSED")
         return 0
     else:
         error_counter[0] = error_counter[0] + 1
-        print("ERROR: Line no.", line_number, "- FAILED\n")
+        print("ERROR: Processing line", line_number, "- FAILED\n")
         return 1

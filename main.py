@@ -17,6 +17,10 @@ from    address_mapping    import   define_reset_address
 from    data_conversion    import   binary_to_hex
 from    data_conversion    import   ascii_to_hex
 
+print("\nAssembleX V3.0 - RV32IM Assembly Code Executant Software")
+print("Iran University of Science and Technology - Summer 2024")
+print("--------------------------------------------------------")
+
 try:
     source_path = sys.argv[1]
     firmware_hex_path = sys.argv[1].rstrip('.s') + '_firmware.hex'
@@ -26,7 +30,7 @@ except:
 try:
     source_file = open(source_path, "r")
     source_code_unformatted = source_file.read().splitlines()
-    print("\nINFO: Source file opened successfully\n")
+    print("INFO: Source file opened successfully\n")
 except:
     print("FATAL ERROR:  Unable to open source file\n")
     exit(1)
@@ -121,13 +125,13 @@ if error_flag[0] == 0:
         file = open(firmware_hex_path, "w")
         for line in hex_instruction:
             file.write(line + '\n')
-        print('\DONE: Successfully created FIRMWARE file')
+        print('\nDONE: Successfully created FIRMWARE file\n')
         file.close()
     except:
-        print('FATAL ERROR: Unable to create FIRMWARE file')
+        print('\nFATAL ERROR: Unable to create FIRMWARE file\n')
 else:
-    print('No. of lines of code parsed     = ', lines_of_code)
-    print('No. of instructions parsed      = ', instruction_counter[0])
-    print('No. of instructions with ERRORS = ', error_counter[0])
+    print('- Lines of code (source)   = ', lines_of_code)
+    print('- Assembled instructions   = ', instruction_counter[0])
+    print('- Instructions with ERRORS = ', error_counter[0])
     print('\nFAIL:Failed to parse the assembly code due to errors')
     exit(2)

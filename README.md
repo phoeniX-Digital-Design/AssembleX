@@ -7,7 +7,7 @@ AssembleX V3.0
 
 <div align="justify">
 
-This repository contains source codes of `AssembleX`, the assembly code executant software for the [phoeniX RISC-V processor](https://github.com/phoeniX-Digital-Design/phoeniX) which is implemented in Verilog, at Electronics Research Center of Iran University of Science and Technology. AssembleX is powered by [riscv-assembler](https://github.com/celebi-pkg/riscv-assembler) and [PQR5ASM](https://github.com/iammituraj/pqr5asm) open-source projects.
+This repository contains source codes of `AssembleX`, the assembly code executant software for the [phoeniX RISC-V processor](https://github.com/phoeniX-Digital-Design/phoeniX) which is implemented in Verilog, at Electronics Research Center of Iran University of Science and Technology. AssembleX is powered by [riscv-assembler](https://github.com/celebi-pkg/riscv-assembler) and [PQR5ASM](https://github.com/iammituraj/pqr5asm) open-source projects. Current version of AssembleX supports `RV32IM` extenstions of standard RISC-V ISA.
 
 This repository contains an open source software under the [GNU V3.0 license](https://en.wikipedia.org/wiki/GNU_General_Public_License) and is free to use.
 

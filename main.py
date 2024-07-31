@@ -1,3 +1,13 @@
+#  AssembleX V3.0
+#  RISC-V Assembly Software Assistant for the phoeniX project (https://github.com/phoeniX-Digital-Design/phoeniX)
+
+#  Description: AssembleX main code
+#  Copyright 2024 Iran University of Science and Technology. <phoenix.digital.electronics@gmail.com>
+
+#  Permission to use, copy, modify, and/or distribute this software for any
+#  purpose with or without fee is hereby granted, provided that the above
+#  copyright notice and this permission notice appear in all copies.
+
 import  sys
 from    variables          import   *
 from    assembler          import   assembler
@@ -9,7 +19,6 @@ from    data_conversion    import   ascii_to_hex
 
 try:
     source_path = sys.argv[1]
-    firmware_bin_path = sys.argv[1].rstrip('.s') + '_firmware.bin'
     firmware_hex_path = sys.argv[1].rstrip('.s') + '_firmware.hex'
 except:
     print('INFO: No arguments/unsupported arguments\n')
@@ -49,25 +58,25 @@ for line in source_code:
     # Check for ASCII: char -> hex
     parse_ascii = [False]
     try:
-        arg2wc = arguments[1]
-        arg2wc = arg2wc.split('#', 2)
-        len_arg2wc = len(arg2wc)
-        arg2 = [arg2wc[0]]
-        ascii_to_hex(arg2)
-        arg2pp = arg2[0].replace(')', '(')
-        arg2pp = "".join(arg2pp.split())
-        arg2list = arg2pp.split('(')
-        if len_arg2wc == 2:
-            arguments[1] = ' ' + arg2list[1] + ', ' + arg2list[0] + ' ' + '#' + arg2wc[1]  # Modified expression
+        arguement_2_wc = arguments[1]
+        arguement_2_wc = arguement_2_wc.split('#', 2)
+        len_arguement_2_wc = len(arguement_2_wc)
+        arguement_2 = [arguement_2_wc[0]]
+        ascii_to_hex(arguement_2)
+        arguement_2_pp = arguement_2[0].replace(')', '(')
+        arguement_2_pp = "".join(arguement_2_pp.split())
+        arguement_2_list = arguement_2_pp.split('(')
+        if len_arguement_2_wc == 2:
+            arguments[1] = ' ' + arguement_2_list[1] + ', ' + arguement_2_list[0] + ' ' + '#' + arguement_2_wc[1]  # Modified expression
         else:  # No inline comment
-            arguments[1] = ' ' + arg2list[1] + ', ' + arg2list[0]  # Modified expression
+            arguments[1] = ' ' + arguement_2_list[1] + ', ' + arguement_2_list[0]  # Modified expression
         processed_code_1.append(",".join(arguments))
     except:
         if parse_ascii[0]:
-            if len_arg2wc == 2:
-                arguments[1] = arg2[0] + ' ' + '#' + arg2wc[1]  # Modified expression
+            if len_arguement_2_wc == 2:
+                arguments[1] = arguement_2[0] + ' ' + '#' + arguement_2_wc[1]  # Modified expression
             else:
-                arguments[1] = arg2[0]  # Modified expression
+                arguments[1] = arguement_2[0]  # Modified expression
             processed_code_1.append(",".join(arguments))
         else:
             processed_code_1.append(line)
@@ -80,7 +89,7 @@ for line in processed_code_1:
     processed_code_2.append(" ".join(line.split()))
 
 lines_of_code = len(processed_code_2)
-print('Lines of code pre-processed =', lines_of_code, '\n')
+print('Lines of code =', lines_of_code, '\n')
 
 start_address = define_reset_address(processed_code_2[0])
 
@@ -108,28 +117,12 @@ if error_flag[0] == 0:
     print('- Instructions with ERRORS = ', error_counter[0])
     binary_to_hex(bin_instruction, hex_instruction)
     try:
-        # Binary text file write
-        file = open(firmware_bin_path, "w")
-        binary_data = bytearray()
-        for line in bin_instruction:
-            file.write(line + '\n')
-            dbyte3 = line[0  :  8]
-            dbyte2 = line[8  : 16]
-            dbyte1 = line[16 : 24]
-            dbyte0 = line[24 : 32]
-            binary_data.append(int(dbyte3, 2))
-            binary_data.append(int(dbyte2, 2))
-            binary_data.append(int(dbyte1, 2))
-            binary_data.append(int(dbyte0, 2))
-        # Dump .bin file
-        instr_totalsize_bytes = instruction_counter[0] * 4
-        file.close()
-
-        # Hex text file write
+        # HEX firmware file write
         file = open(firmware_hex_path, "w")
         for line in hex_instruction:
             file.write(line + '\n')
-        print('\nSUCCESS: Successfully created FIRMWARE file')
+        file.write('00100073') # Mannualy adding ebreak
+        print('\DONE: Successfully created FIRMWARE file')
         file.close()
     except:
         print('FATAL ERROR: Unable to create FIRMWARE file')

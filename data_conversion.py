@@ -1,3 +1,13 @@
+#  AssembleX V3.0
+#  RISC-V Assembly Software Assistant for the phoeniX project (https://github.com/phoeniX-Digital-Design/phoeniX)
+
+#  Description: Data conversion functions
+#  Copyright 2024 Iran University of Science and Technology. <phoenix.digital.electronics@gmail.com>
+
+#  Permission to use, copy, modify, and/or distribute this software for any
+#  purpose with or without fee is hereby granted, provided that the above
+#  copyright notice and this permission notice appear in all copies.
+
 def binary_to_hex(bin_instruction, hex_instruction):
     for line in bin_instruction:
         hex_instruction.append("{:08x}".format(int(line, 2)))  # 32-bit hex from binary string

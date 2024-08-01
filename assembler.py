@@ -77,7 +77,7 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
     # Instruction fields - initialization
     rs1 = 'x0'
     rs2 = 'x0'
-    rdt = 'x0'
+    rd  = 'x0'
     immediate =  0
     # Instruction type flags
     r_type_flag = 0
@@ -113,9 +113,7 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
         elif validity_label(arguement[0].rstrip(':')):
             return 0
     except:
-            # Ignore blank line and move on
         return 0
-
     try:
         opcode = arguement[0]
     except:
@@ -169,8 +167,9 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
             opcode == 'OR'      or opcode == 'or'       or opcode == 'AND'   or opcode == 'and':
         r_type_flag = 1
         opcode_bin = '0110011'
-    elif    opcode == 'EBREAK'  or opcode == 'ebreak'   or opcode == 'ECALL' or opcode == 'ecall':
-        opcode_bin = '1110011'  # EBRAK
+    elif    opcode == 'EBREAK'  or opcode == 'ebreak'   or opcode == 'ECALL' or opcode == 'ecall'   or \
+            opcode == 'CSRRW'   or opcode == 'csrrw'    or opcode == 'CSRRS' or opcode == 'csrrs':
+        opcode_bin = '1110011'  # SYSTEM opcode
 
     # Pseudo instructions decoding    
     elif opcode == 'MV' or opcode == 'mv':
@@ -224,10 +223,10 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
     # R-type instructions
     if r_type_flag == 1:
         try:
-            rdt = arguement[1]
+            rd  = arguement[1]
             rs1 = arguement[2]
             rs2 = arguement[3]
-            if validity_registers(rdt) or validity_registers(rs1) or validity_registers(rs2):
+            if validity_registers(rd) or validity_registers(rs1) or validity_registers(rs2):
                 print("ERROR: Invalid/unsupported register at line no: ", line_number)
                 instruction_error_flag = 1
                 error_flag[0] = 1
@@ -243,10 +242,10 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
     # I-type instructions
     if i_type_flag == 1:
         try:
-            rdt = arguement[1]
+            rd  = arguement[1]
             rs1 = arguement[2]
             immediate = arguement[3]
-            if validity_registers(rdt) or validity_registers(rs1):
+            if validity_registers(rd) or validity_registers(rs1):
                 print("ERROR: Invalid/unsupported register at line no: ", line_number)
                 instruction_error_flag = 1
                 error_flag[0] = 1
@@ -300,9 +299,9 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
     # U-type/J-type instructions
     if u_type_flag == 1 or j_type_flag == 1:
         try:
-            rdt = arguement[1]
+            rd = arguement[1]
             immediate = arguement[2]
-            if validity_registers(rdt):
+            if validity_registers(rd):
                 print("ERROR: Invalid/unsupported register at line no: ", line_number)
                 instruction_error_flag = 1
                 error_flag[0] = 1
@@ -319,10 +318,10 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
     if pseudo_instruction_mv_type_flag == 1:
         try:
             i_type_flag = 1  # Derived from i-type
-            rdt = arguement[1]
+            rd  = arguement[1]
             rs1 = arguement[2]
             immediate = 0
-            if validity_registers(rdt) or validity_registers(rs1):
+            if validity_registers(rd) or validity_registers(rs1):
                 print("ERROR: Invalid/unsupported register at line no: ", line_number)
                 instruction_error_flag = 1
                 error_flag[0] = 1
@@ -339,10 +338,10 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
     if pseudo_instruction_mvi_type_flag == 1:
         try:
             i_type_flag = 1  # Derived from i-type
-            rdt = arguement[1]
+            rd  = arguement[1]
             rs1 = 'x0'
             immediate = arguement[2]
-            if validity_registers(rdt):
+            if validity_registers(rd):
                 print("ERROR: Invalid/unsupported register at line no: ", line_number)
                 instruction_error_flag = 1
                 error_flag[0] = 1
@@ -358,7 +357,7 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
     # Pseudo instruction: NOP
     if pseudo_instruction_nop_type_flag == 1:
         i_type_flag = 1  # Derived from i-type
-        rdt = 'x0'
+        rd  = 'x0'
         rs1 = 'x0'
         immediate = 0
         if len(arguement) > 1 and arguement[1][0] != '#':  # Integrity check; ignore if inline comment
@@ -370,7 +369,7 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
     if pseudo_instruction_j_type_flag == 1:
         try:
             j_type_flag = 1  # Derived from j-type
-            rdt = 'x0'
+            rd = 'x0'
             immediate = arguement[1]
             if len(arguement) > 2 and arguement[2][0] != '#':  # Integrity check; ignore if inline comment
                 print("ERROR: Invalid no. of operands at line no: ", line_number)
@@ -385,10 +384,10 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
     if pseudo_instruction_not_type_flag == 1:
         try:
             i_type_flag = 1  # Derived from i-type
-            rdt = arguement[1]
+            rd  = arguement[1]
             rs1 = arguement[2]
             immediate = -1
-            if validity_registers(rdt) or validity_registers(rs1):
+            if validity_registers(rd) or validity_registers(rs1):
                 print("ERROR: Invalid/unsupported register at line no: ", line_number)
                 instruction_error_flag = 1
                 error_flag[0] = 1
@@ -405,10 +404,10 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
     if pseudo_instruction_inv_type_flag == 1:
         try:
             i_type_flag = 1  # Derived from i-type
-            rdt = arguement[1]
+            rd  = arguement[1]
             rs1 = arguement[1]
             immediate = -1
-            if validity_registers(rdt):
+            if validity_registers(rd):
                 print("ERROR: Invalid/unsupported register at line no: ", line_number)
                 instruction_error_flag = 1
                 error_flag[0] = 1
@@ -425,10 +424,10 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
     if pseudo_instruction_seqz_type_flag == 1:
         try:
             i_type_flag = 1  # Derived from i-type
-            rdt = arguement[1]
+            rd  = arguement[1]
             rs1 = arguement[2]
             immediate = 1
-            if validity_registers(rdt) or validity_registers(rs1):
+            if validity_registers(rd) or validity_registers(rs1):
                 print("ERROR: Invalid/unsupported register at line no: ", line_number)
                 instruction_error_flag = 1
                 error_flag[0] = 1
@@ -445,10 +444,10 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
     if pseudo_instruction_snez_type_flag == 1:
         try:
             r_type_flag = 1  # Derived from r-type
-            rdt = arguement[1]
+            rd  = arguement[1]
             rs1 = 'x0'
             rs2 = arguement[2]
-            if validity_registers(rdt) or validity_registers(rs2):
+            if validity_registers(rd) or validity_registers(rs2):
                 print("ERROR: Invalid/unsupported register at line no: ", line_number)
                 instruction_error_flag = 1
                 error_flag[0] = 1
@@ -505,9 +504,9 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
     if pseudo_instruction_li_type_flag or pseudo_instruction_la_type_flag:
         try:
             rs1 = arguement[1]  # For ADDI
-            rdt = arguement[1]  # For LUI, ADDI
+            rd  = arguement[1]  # For LUI, ADDI
             immediate = arguement[2]
-            if validity_registers(rdt):
+            if validity_registers(rd):
                 print("ERROR: Invalid/unsupported register at line no: ", line_number)
                 instruction_error_flag = 1
                 error_flag[0] = 1
@@ -524,7 +523,7 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
     if pseudo_instruction_jr_type_flag:
         try:
             i_type_flag = 1  # Derived from i-type
-            rdt = 'x0'
+            rd  = 'x0'
             rs1 = arguement[1]
             immediate = 0
             if validity_registers(rs1):
@@ -542,7 +541,7 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
 
     rs1_bin = register_index_mapping(rs1)
     rs2_bin = register_index_mapping(rs2)
-    rdt_bin = register_index_mapping(rdt)
+    rd_bin  = register_index_mapping(rd)
 
     # Decode immediate/offset
     error_status = [0]
@@ -565,138 +564,138 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
     elif instruction_error_flag == 0 and (opcode == 'ADD' or opcode == 'add'):
         funct3 = '000'
         funct7 = '0000000'
-        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'SUB' or opcode == 'sub'):
         funct3 = '000'
         funct7 = '0100000'
-        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'SLL' or opcode == 'sll'):
         funct3 = '001'
         funct7 = '0000000'
-        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'SLT' or opcode == 'slt'):
         funct3 = '010'
         funct7 = '0000000'
-        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'SLTU' or opcode == 'sltu'):
         funct3 = '011'
         funct7 = '0000000'
-        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'XOR' or opcode == 'xor'):
         funct3 = '100'
         funct7 = '0000000'
-        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'SRL' or opcode == 'srl'):
         funct3 = '101'
         funct7 = '0000000'
-        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'SRA' or opcode == 'sra'):
         funct3 = '101'
         funct7 = '0100000'
-        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'OR' or opcode == 'or'):
         funct3 = '110'
         funct7 = '0000000'
-        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'AND' or opcode == 'and'):
         funct3 = '111'
         funct7 = '0000000'
-        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'MUL' or opcode == 'mul'):
         funct3 = '000'
         funct7 = '0000001'
-        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'MULH' or opcode == 'mulh'):
         funct3 = '001'
         funct7 = '0000001'
-        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'MULHSU' or opcode == 'mulhsu'):
         funct3 = '010'
         funct7 = '0000001'
-        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'MULHU' or opcode == 'mulhu'):
         funct3 = '011'
         funct7 = '0000001'
-        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'DIV' or opcode == 'div'):
         funct3 = '100'
         funct7 = '0000001'
-        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'DIVU' or opcode == 'divu'):
         funct3 = '101'
         funct7 = '0000001'
-        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'REM' or opcode == 'rem'):
         funct3 = '110'
         funct7 = '0000001'
-        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'REMU' or opcode == 'remu'):
         funct3 = '111'
         funct7 = '0000001'
-        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'JALR' or opcode == 'jalr'):
         immediate_bin_11_0 = immediate_bin[20:32]  # immediate[11:0]
         funct3 = '000'
-        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'LB' or opcode == 'lb'):
         immediate_bin_11_0 = immediate_bin[20:32]  # immediate[11:0]
         funct3 = '000'
-        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'LH' or opcode == 'lh'):
         immediate_bin_11_0 = immediate_bin[20:32]  # immediate[11:0]
         funct3 = '001'
-        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'LW' or opcode == 'lw'):
         immediate_bin_11_0 = immediate_bin[20:32]  # immediate[11:0]
         funct3 = '010'
-        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'LBU' or opcode == 'lbu'):
         immediate_bin_11_0 = immediate_bin[20:32]  # immediate[11:0]
         funct3 = '100'
-        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'LHU' or opcode == 'lhu'):
         immediate_bin_11_0 = immediate_bin[20:32]  # immediate[11:0]
         funct3 = '101'
-        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'ADDI' or opcode == 'addi'):
         immediate_bin_11_0 = immediate_bin[20:32]  # immediate[11:0]
         funct3 = '000'
-        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'SLTI' or opcode == 'slti'):
         immediate_bin_11_0 = immediate_bin[20:32]  # immediate[11:0]
         funct3 = '010'
-        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'SLTIU' or opcode == 'sltiu'):
         immediate_bin_11_0 = immediate_bin[20:32]  # immediate[11:0]
         funct3 = '011'
-        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'XORI' or opcode == 'xori'):
         immediate_bin_11_0 = immediate_bin[20:32]  # immediate[11:0]
         funct3 = '100'
-        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'ORI' or opcode == 'ori'):
         immediate_bin_11_0 = immediate_bin[20:32]  # immediate[11:0]
         funct3 = '110'
-        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'ANDI' or opcode == 'andi'):
         immediate_bin_11_0 = immediate_bin[20:32]  # immediate[11:0]
         funct3 = '111'
-        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'SLLI' or opcode == 'slli'):
         shamnt = immediate_bin[27:32]  # immediate[4:0]
         funct3 = '001'
         funct7 = '0000000'
-        bin_instruction.append(funct7 + shamnt + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(funct7 + shamnt + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'SRLI' or opcode == 'srli'):
         shamnt = immediate_bin[27:32]  # immediate[4:0]
         funct3 = '101'
         funct7 = '0000000'
-        bin_instruction.append(funct7 + shamnt + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(funct7 + shamnt + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'SRAI' or opcode == 'srai'):
         shamnt = immediate_bin[27:32]  # immediate[4:0]
         funct3 = '101'
         funct7 = '0100000'
-        bin_instruction.append(funct7 + shamnt + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(funct7 + shamnt + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'SB' or opcode == 'sb'):
         immediate_bin_11_0 = immediate_bin[20:32]  # immediate[11:0]
         funct3 = '000'
@@ -741,34 +740,34 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
                          immediate_bin_12_1[1] + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'LUI' or opcode == 'lui'):
         immediate_bin_31_12 = immediate_bin[12:32]  # Observed to be immediate[19:0] in all implementations, not immediate[31:12]
-        bin_instruction.append(immediate_bin_31_12 + rdt_bin + opcode_bin)
+        bin_instruction.append(immediate_bin_31_12 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'AUIPC' or opcode == 'auipc'):
         immediate_bin_31_12 = immediate_bin[12:32]  # Observed to be immediate[19:0] in all implementations, not immediate[31:12]
-        bin_instruction.append(immediate_bin_31_12 + rdt_bin + opcode_bin)
+        bin_instruction.append(immediate_bin_31_12 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (opcode == 'JAL' or opcode == 'jal'):
         immediate_bin_20_1 = immediate_bin[11:31]  # immediate[20:1]
         bin_instruction.append(immediate_bin_20_1[0] + immediate_bin_20_1[10:20] + immediate_bin_20_1[9] + immediate_bin_20_1[1:9] +
-                         rdt_bin + opcode_bin)
+                         rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (pseudo_instruction_mv_type_flag or pseudo_instruction_mvi_type_flag or pseudo_instruction_nop_type_flag):  # = ADDI
         immediate_bin_11_0 = immediate_bin[20:32]  # immediate[11:0]
         funct3 = '000'
-        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and pseudo_instruction_j_type_flag:  # = JAL
         immediate_bin_20_1 = immediate_bin[11:31]  # immediate[20:1]
         bin_instruction.append(immediate_bin_20_1[0] + immediate_bin_20_1[10:20] + immediate_bin_20_1[9] + immediate_bin_20_1[1:9] +
-                         rdt_bin + opcode_bin)
+                         rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and (pseudo_instruction_not_type_flag or pseudo_instruction_inv_type_flag):  # = XORI
         immediate_bin_11_0 = immediate_bin[20:32]  # immediate[11:0]
         funct3 = '100'
-        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and pseudo_instruction_seqz_type_flag:  # = SLTIU
         immediate_bin_11_0 = immediate_bin[20:32]  # immediate[11:0]
         funct3 = '011'
-        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and pseudo_instruction_snez_type_flag:  # = SLTU
         funct3 = '011'
         funct7 = '0000000'
-        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(funct7 + rs2_bin + rs1_bin + funct3 + rd_bin + opcode_bin)
     elif instruction_error_flag == 0 and pseudo_instruction_beqz_type_flag:  # = BEQ
         immediate_bin_12_1 = immediate_bin[19:31]  # immediate[12:1]
         funct3 = '000'
@@ -787,15 +786,45 @@ def assembler(pc, line, line_number, error_flag, error_counter, bin_instruction)
             temp = int(immediate_bin[0:20], base=2) + 1
             immediate_bin_lui = int_to_binary(temp)
             immediate_bin_31_12 = immediate_bin_lui[12:32]  # immediate[31:12] + 1
-        bin_instruction.append(immediate_bin_31_12 + rdt_bin + opcode_array[0])  # Write LUI instruction
+        bin_instruction.append(immediate_bin_31_12 + rd_bin + opcode_array[0])  # Write LUI instruction
         # ADDI
         immediate_bin_11_0 = immediate_bin[20:32]  # immediate[11:0]
         funct3 = '000'
-        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rdt_bin + opcode_array[1])  # Write ADDI instruction
+        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rd_bin + opcode_array[1])  # Write ADDI instruction
     elif instruction_error_flag == 0 and (pseudo_instruction_jr_type_flag):  # = JALR
         immediate_bin_11_0 = immediate_bin[20:32]  # immediate[11:0]
         funct3 = '000'
-        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rdt_bin + opcode_bin)
+        bin_instruction.append(immediate_bin_11_0 + rs1_bin + funct3 + rd_bin + opcode_bin)
+    elif instruction_error_flag == 0 and (opcode == 'CSRRW' or opcode == 'csrrw'):
+        # Remove the '0x' prefix if it exists
+        if immediate.startswith("0x"):
+            immediate = immediate[2:]
+        decimal_immediate = int(immediate, 16)
+        binary_immediate  = bin(decimal_immediate)[2:]
+        # Zero-extend to the specified bit size
+        csr_address = binary_immediate.zfill(12)
+        csr_address = csr_address[-12:]  # Ensure it's no longer than the bit size    
+        bin_instruction.append(csr_address + rs1_bin + "001" + rd_bin + "1110011")
+    elif instruction_error_flag == 0 and (opcode == 'CSRRS' or opcode == 'csrrs'):
+        # Remove the '0x' prefix if it exists
+        if immediate.startswith("0x"):
+            immediate = immediate[2:]
+        decimal_immediate = int(immediate, 16)
+        binary_immediate  = bin(decimal_immediate)[2:]
+        # Zero-extend to the specified bit size
+        csr_address = binary_immediate.zfill(12)
+        csr_address = csr_address[-12:]  # Ensure it's no longer than the bit size
+        bin_instruction.append(csr_address + rs1_bin + "010" + rd_bin + "1110011")
+    elif instruction_error_flag == 0 and (opcode == 'CSRRC' or opcode == 'csrrc'):
+        # Remove the '0x' prefix if it exists
+        if immediate.startswith("0x"):
+            immediate = immediate[2:]
+        decimal_immediate = int(immediate, 16)
+        binary_immediate  = bin(decimal_immediate)[2:]
+        # Zero-extend to the specified bit size
+        csr_address = binary_immediate.zfill(12)
+        csr_address = csr_address[-12:]  # Ensure it's no longer than the bit size
+        bin_instruction.append(csr_address + rs1_bin + "011" + rd_bin + "1110011")
     else:
         funct3 = 'XXX'
 

@@ -9,13 +9,13 @@
 #  copyright notice and this permission notice appear in all copies.
 
 import  sys
-from    variables          import   *
-from    assembler          import   assembler
-from    address_mapping    import   address_mapping
-from    address_mapping    import   label_mapping
-from    address_mapping    import   define_reset_address
-from    data_conversion    import   binary_to_hex
-from    data_conversion    import   ascii_to_hex
+from    src.variables          import   *
+from    src.assembler          import   assembler
+from    src.address_mapping    import   address_mapping
+from    src.address_mapping    import   label_mapping
+from    src.address_mapping    import   define_reset_address
+from    src.data_conversion    import   binary_to_hex
+from    src.data_conversion    import   ascii_to_hex
 
 print("\nAssembleX V3.0 - RV32IM Assembly Code Executant Software")
 print("Iran University of Science and Technology - Summer 2024")

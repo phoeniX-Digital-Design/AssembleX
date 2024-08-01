@@ -1,6 +1,6 @@
 ![License](https://img.shields.io/github/license/phoeniX-Digital-Design/AssembleX?color=dark-green)
 ![Test](https://img.shields.io/badge/tests-passed-dark_green)
-![RV32](https://img.shields.io/badge/integration_with_phoeniX-IM-blue)
+![RV32](https://img.shields.io/badge/RV32-IM-blue)
 
 AssembleX V3.0
 ===============
@@ -31,8 +31,6 @@ Provided that you name your project sub-directory correctly the AssembleX softwa
 > [!NOTE]\
 > AssembleX V3.0 is not integrated within the [phoeniX](https://github.com/phoeniX-Digital-Design/phoeniX) project repository yet. Currently phoeniX core is working with AssembleX V1.0 which is using the assistance of Venus Simulator VS code extension. **phoeniX** RISC-V processor will be empowered by **AssembleX V3.0** in the upcoming updates very soon!
 
+Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
 
-> [!NOTE]\
-> Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
-
- Copyright 2024 Iran University of Science and Technology. <phoenix.digital.electronics@gmail.com>
+Copyright 2024 Iran University of Science and Technology. <phoenix.digital.electronics@gmail.com>

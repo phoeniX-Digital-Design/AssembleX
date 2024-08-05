@@ -8,10 +8,10 @@
 #  purpose with or without fee is hereby granted, provided that the above
 #  copyright notice and this permission notice appear in all copies.
 
-from    src.variables          import *
-from    src.registers_rv32i    import   registers_rv32i
-from    src.registers_rv32i    import   register_index_mapping
-from    src.data_conversion    import   int_to_binary
+from    source.variables          import *
+from    source.registers_rv32i    import   registers_rv32i
+from    source.registers_rv32i    import   register_index_mapping
+from    source.data_conversion    import   int_to_binary
 
 # Return address of a label in code
 def parse_address_label(input_value):

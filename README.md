@@ -20,7 +20,7 @@ This repository contains an open source software under the [GNU V3.0 license](ht
 ### How to use AssembleX
 <div align="justify">
 
-In order to run your own code on phoeniX, create a directory named to your project such as `/my_project` in `/Assembly_Codes/`. Put all your `user_code.s` files in my_project and run the following command from the main directory:
+In order to run your own code on phoeniX, create a directory named to your project such as `/my_project` in `/code/`. Put all your `user_code.s` files in my_project and run the following command from the main directory:
 ```
 python AssembleX.py  my_project_directory/my_project.s
 ```
